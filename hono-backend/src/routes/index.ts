@@ -4,14 +4,14 @@ import { Hono } from "hono";
 import { decode, sign, verify } from 'hono/jwt'
 
 const privateKey = "Sivaji vaai la jilebi"
-export const nextRouter = new Hono<{
+export const userRouter = new Hono<{
        Bindings : {
         DATABASE_URL : string,
         JWT_SECRET : string
        } 
       }>();
 
-nextRouter.post("/user/signup/", async (c) => {
+userRouter.post("/signup/", async (c) => {
   const prisma = new PrismaClient({
     datasourceUrl: c.env.DATABASE_URL,
   }).$extends(withAccelerate());
@@ -32,7 +32,7 @@ nextRouter.post("/user/signup/", async (c) => {
   });
 });
 
-nextRouter.post("/user/signin/", async (c) => {
+userRouter.post("/signin/", async (c) => {
   const prisma = new PrismaClient({
     datasourceUrl: c.env.DATABASE_URL,
   }).$extends(withAccelerate());
@@ -55,18 +55,4 @@ nextRouter.post("/user/signin/", async (c) => {
   return c.json({
     token 
   })
-});
-
-
-nextRouter.post("/blog", (c) => {
-  return c.text("asdf");
-});
-nextRouter.put("api/v1/blog", (c) => {
-  return c.text("");
-});
-nextRouter.get("/blog/:id", (c) => {
-  return c.text("Hello Hono!");
-});
-nextRouter.get("/blog/bluk", (c) => {
-  return c.text("Hello Hono!");
 });
